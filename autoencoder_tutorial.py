@@ -1,5 +1,5 @@
 from keras.layers import Input, Dense
-from keras.models import Model
+from keras.models import Model, Sequential
 from keras.datasets import mnist
 from keras import regularizers
 import numpy as np
@@ -8,22 +8,41 @@ import matplotlib.pyplot as plt
 encoding_dim = 32  
 input_img = Input(shape=(784,))
 
+##########################
+### Standard  Autoencoder
+##########################
+
 # original encoder
 # encoded = Dense(encoding_dim, activation='relu',)(input_img)
 
 # regularized encoder
-encoded = Dense(encoding_dim, activation='relu',
-        activity_regularizer=regularizers.l1(10e-5))(input_img)
+# encoded = Dense(encoding_dim, activation='relu',
+#         activity_regularizer=regularizers.l1(10e-5))(input_img)
 
-decoded = Dense(784, activation='sigmoid')(encoded)
+#decoded = Dense(784, activation='sigmoid')(encoded)
+
+
+#######################
+### Deep Autoencoder
+######################
+
+encoded = Dense(128, activation='relu')(input_img)
+encoded = Dense(64, activation='relu')(encoded)
+encoded = Dense(32, activation='relu')(encoded)
+
+decoded = Dense(64, activation='relu')(encoded)
+decoded = Dense(128, activation='relu')(decoded)
+decoded = Dense(784, activation='sigmoid')(decoded)
+
 
 autoencoder = Model(input_img, decoded)
 
 encoder = Model(input_img, encoded)
 encoded_input = Input(shape=(encoding_dim,))
 
+decoder_layer = autoencoder.layers[-3]
+decoder_layer = autoencoder.layers[-2]
 decoder_layer = autoencoder.layers[-1]
-
 
 # The enclosed sets create the same model.
 decoder = Model(encoded_input, decoder_layer(encoded_input))
@@ -75,3 +94,8 @@ for i in range(n):
 plt.ion()
 plt.show()
 
+# CNTK: 0.0960
+# CNTK Regularized: 0.2774
+# TF: 0.0943 
+# TF Regularized: 0.2774
+# TF Deep: 
