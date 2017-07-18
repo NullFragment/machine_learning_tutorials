@@ -22,7 +22,7 @@ endfunction
 ################################################################################
 ### START FUNCTION: componentMSE                                             ###
 ################################################################################
-# Computes component-wise Mean Squared Error Function
+# Computes component-wise Mean Squared Error
 
 function [J] = componentMSE (x, y, theta)
     m = size(x,1);                    # number of training examples
@@ -34,7 +34,7 @@ endfunction
 ################################################################################
 ### START FUNCTION: vectorMSE                                                ###
 ################################################################################
-# Computes the vectorized Mean Squared Error Function
+# Computes the vectorized Mean Squared Error
 
 function [J] = vectorMSE (X, Y, Theta)
     m = rows(X);            # number of training samples
@@ -42,4 +42,24 @@ function [J] = vectorMSE (X, Y, Theta)
     lhs = rhs';             # inverse error matrix
     sqError = lhs * rhs;    # squared error matrix
     J = 1/(2*m) * sqError;  # mean squared error
+endfunction
+
+################################################################################
+### START FUNCTION: gradvMSE                                                 ###
+################################################################################
+# Computes the vectorized gradient of the Mean Squared Error
+
+function [del] = gradvMSE (X, Y, Theta)
+    m = rows(X);            # number of training samples
+    err = X*Theta - Y;      # error matrix
+    del = 1/(m) * (X' * err);  # mean squared error
+endfunction
+
+################################################################################
+### START FUNCTION: gradvDescMSE                                             ###
+################################################################################
+# Computes the vectorized gradient descent for one step using MSE
+
+function [theta] = gradvDescMSE (X, Y, Theta, alpha)
+    theta = Theta - alpha*gradvMSE(X, Y, Theta);
 endfunction
