@@ -23,7 +23,7 @@ endfunction
 # Computes component-wise Mean Squared Error
 
 function [J] = componentMSE (x, y, theta)
-    m = size(x,1);                    # number of training examples
+    m = size(x,1);                  # number of training examples
     predictions = x*theta;          # predicted values
     errors = (predictions - y).^2;  # squared errors
     J = 1/(2*m) * sum(errors);      # mean squared errors
@@ -48,9 +48,9 @@ endfunction
 # Computes the vectorized gradient of the Mean Squared Error
 
 function [del] = gradvMSE (X, Y, Theta)
-    m = rows(X);            # number of training samples
-    err = X*Theta - Y;      # error matrix
-    del = 1/(m) * (X' * err);  # mean squared error
+    m = rows(X);
+    err = X*Theta - Y;
+    del = 1/(m) * (X' * err);
 endfunction
 
 #===============================================================================
@@ -58,11 +58,12 @@ endfunction
 #===============================================================================
 # Computes the vectorized gradient descent for one step using MSE
 
-function [theta] = gradvDescMSE (X, Y, Theta, alpha, iterations)
+function [theta, J_history] = gradvDescMSE (X, Y, Theta, alpha, iterations)
     J_history = zeros(iterations, 1);
     for iter = 1:iterations
         theta = Theta - alpha*gradvMSE(X, Y, Theta);
         J_history(iter) = vectorMSE(X, Y, Theta);
+    endfor
 endfunction
 
 #===============================================================================
