@@ -14,7 +14,7 @@ endfunction
 # Computes the sigmoid function for a given X and theta
 
 function [g] = sigmoid (X, theta)
-    z = transpose(theta) * X;
+    z = X*theta;
     g = 1./(1+exp(-z);
 endfunction
 
