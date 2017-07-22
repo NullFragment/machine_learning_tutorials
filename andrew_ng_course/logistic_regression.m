@@ -15,7 +15,7 @@ endfunction
 
 function [g] = sigmoid (X, theta)
     z = X*theta;
-    g = 1./(1+exp(-z);
+    g = 1./(1+exp(-z));
 endfunction
 
 #===============================================================================
@@ -38,7 +38,7 @@ endfunction
 
 function [del] = grad_log_cost(X, y, theta)
     m = length(y)
-    h = g(X, theta);
+    h = sigmoid(X, theta);
     err = (h - y);
     del = 1/(m) * (X' * err);
 endfunction
@@ -57,23 +57,40 @@ function [theta, J_history] = gradDescLog (X, Y, Theta, alpha, iterations)
 endfunction
 
 #===============================================================================
-### START FUNCTION: log_all_cost                                             ###
+### START FUNCTION: log_cost_reg                                             ###
 #===============================================================================
-# Returns the cost and gradient of the cost function
+# Description
 
-function [J, grad_J] = log_all_cost()
-    J = log_cost();
-    grad_J = grad_log_cost();
+function log_cost_reg ()
+    m = length(y);                          # number of training examples
+    L = eye(length(theta));                 # Initialize L for regularization
+    L(1,1) = 0;                             # Prevent regularization of Theta(0)
+    z = X*theta;                            # Sigmoid input
+    h = sigmoid(z);                         # Compute hypothesis probability
+    reg_param = (lambda/(2*m))              # Regularization parameter
+    reg_theta = (L*theta)'*(L*theta);       # Theta^2 without Theta(0)
+    reg_val = reg_param*reg_theta;          # Regularization values
+    
+    pos = transpose(y)*log(h);              # Probability of 1
+    neg = transpose(1-y)*log(1-h);          # Probability of 0
+    J = -1/m * (pos + neg)+(reg_val);       # Regularized Cost
+
 endfunction
 
 #===============================================================================
-### START FUNCTION: optimized_descent                                        ###
+### START FUNCTION: grad_log_cost_reg                                        ###
 #===============================================================================
-# Uses the fminunc function to find optimized theta values
+# Description
 
-function optimized_descent (X, y)
-    options = optimset('GradObj', 'on', 'MaxIter', 100);
-    initialTheta = zeros(2,1);
-    [optTheta, functionVal, exitFlag] = ...
-        fminunc(@(theta)(log_all_cost(X,y,theta)), initialTheta, options);
+function grad_log_cost_reg (X,y,theta)
+    m = length(y);                          # number of training examples
+    L = eye(length(theta));                 # Initialize L for regularization
+    L(1,1) = 0;                             # Prevent regularization of Theta(0)
+    z = X*theta;                            # Compute sigmoid input
+    h = sigmoid(z);                         # Compute hypothesis probability
+
+    reg_val = (lambda)*L*theta;             # Create regularized value
+    err = (h - y);                          # Compute error of hypothesis
+    grad = 1/(m) * (X' * err + reg_val)     # Compute gradient of hypothesis
 endfunction
+
