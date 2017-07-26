@@ -61,7 +61,7 @@ endfunction
 #===============================================================================
 # Description
 
-function log_cost_reg ()
+function log_cost_reg (X, y, theta, lambda)
     m = length(y);                          # number of training examples
     L = eye(length(theta));                 # Initialize L for regularization
     L(1,1) = 0;                             # Prevent regularization of Theta(0)
