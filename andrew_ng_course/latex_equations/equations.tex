@@ -1,0 +1,61 @@
+\documentclass{standalone}
+\usepackage{amsmath,amssymb}
+\begin{document}
+$\displaystyle
+\begin{array}{rcll}
+	&&&\\
+		L^{[m \times m]} & = & \begin{bmatrix} 
+		0 & 0 & 0      & 0               \\
+		0 & 1 & 0      & 0               \\ 
+		0 & 0 & \ddots & 0               \\ 
+		0 & 0 & 0      & 1 \end{bmatrix} & \text{Strips bias terms from $\Theta$} \\
+	&&&\\
+	\multicolumn{3}{l}{\textbf{Linear Regression:}} \\
+	J(\theta) & = & \frac{1}{2m}(X\theta - y)^T(X\theta - y) + \frac{\lambda}{2m}[(L\theta)^T(L\theta)] & \text{Cost Function}\\
+	&&\\
+	\nabla J   & = & \frac{1}{m}(X^T(X\theta - y) + \lambda L\theta) & \text{Cost Gradient}\\
+	&&\\
+	\theta & := & (1-\frac{\alpha\lambda}{m}L\theta) - \frac{\alpha}{m}X^T(X\theta - y) & \text{Paramater Update Rule}\\
+	&&\\
+	\multicolumn{3}{l}{\textbf{Logistic Regression:}} \\
+	\sigma(z) & = & \frac{1}{1 + e^{-z}} & \text{Logistic/Sigmoid Function}\\
+	&&\\
+	h & = & \sigma(X*\Theta') & \text{Hypothesis/Prediction Function}\\
+	&&\\
+	J(\theta) & = & -\frac{1}{m}[y^T\log(h) + (1-y)^T\log(1-h)] + \frac{\lambda}{2m}[(L\theta)^T(L\theta)] & \text{Cost Function}\\
+	&&\\
+	\nabla J   & = & \frac{1}{m}(X^T(h-y) + \lambda L\theta) & \text{Cost Gradient}\\
+	&&\\
+	\theta & := & (1-\frac{\alpha\lambda}{m}L\theta) - \frac{\alpha}{m}X^T(h - y) & \text{Paramater Update Function}\\
+	&&\\
+	\multicolumn{3}{l}{\textbf{Neural Networks:}} \\
+	\sigma'(z) & = & \sigma(z).*(1 - \sigma(z)) & \text{Sigmoid Derivative}\\
+	&&\\
+	a^l & = & \sigma(a^{l-1}*[\theta^{l-1}]^T) & \text{Activation/Output of layer l}\\
+	&&\\
+		Y^{(i)} & = & \begin{bmatrix} 
+		0 \\
+		0 \\
+		\vdots \\
+		1 \\
+		\vdots \\
+		0 \end{bmatrix}, Y[k] = 1 & \text{One-Hot Form of Classification Result}\\
+	&&\\
+	J(\theta) & = & -\frac{1}{m}\sum_{i=1}^{m}\sum_{j=1}^{||L||}[Y.*log(a^{(L)}) + (1-Y).*log(1-a^{(L)})] & \text{Cost function of NN used for Backpropogation,}\\
+	& & + \frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_{l+1}}(\theta^{(l)}_{i,j})^2 & \text{condensed down to a scalar}\\
+	&&\\
+	\delta^{(L)} & = & a^{(L)} - Y & \text{Error of Neural Network Output}\\ 
+	&&\\
+	\delta^{(l)} & = & \delta^{(l+1)}\widehat{\Theta}^{(l)} \odot \sigma'(a^{(l)}\Theta^{(l)}) & \text{Error of layer l}\\
+	&&\\
+	\widehat{\Theta}^{(l)} & = & \Theta^{(l)}[i, j]; i \in [1,2,3...m], j \in [2,3,4,...n] & \text{Reduced Paramater Matrix (No Bias Terms)} \\ 
+	&&\\
+	\Delta^{(l)} & = & \delta^{(l+1)T}*a^{(l)}  & \text{Cumulative Error of Layer l} \\
+	&&\\
+	\nabla\frac{\partial J}{\partial\Theta^{(l)}} & = & \frac{1}{m} \Delta^{(l)} + \frac{\lambda}{m}\Theta^{(l)}L  & \text{Gradient of the Cost Function for Layer l} \\
+	&&\\
+
+\end{array}
+$
+
+\end{document}
