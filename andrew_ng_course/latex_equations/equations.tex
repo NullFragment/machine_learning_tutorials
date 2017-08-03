@@ -29,24 +29,24 @@ $\displaystyle
 	\theta & := & (1-\frac{\alpha\lambda}{m}L\theta) - \frac{\alpha}{m}X^T(h - y) & \text{Paramater Update Function}\\
 	&&\\
 	\multicolumn{3}{l}{\textbf{Neural Networks:}} \\
-	\sigma'(z) & = & \sigma(z).*(1 - \sigma(z)) & \text{Sigmoid Derivative}\\
+	\sigma'(z) & = & \sigma(z) \odot (1 - \sigma(z)) & \text{Sigmoid Derivative}\\
 	&&\\
-	a^l & = & \sigma(a^{l-1}*[\theta^{l-1}]^T) & \text{Activation/Output of layer l}\\
+	a^{(l)} & = & \sigma\{a^{(l-1)}*[\theta^{(l-1)}]^T\} & \text{Activation/Output of layer l}\\
 	&&\\
-		Y^{(i)} & = & \begin{bmatrix} 
+		Y^{(i)}_{k=1} & = & \begin{bmatrix} 
 		0 \\
 		0 \\
 		\vdots \\
 		1 \\
 		\vdots \\
-		0 \end{bmatrix}, Y[k] = 1 & \text{One-Hot Form of Classification Result}\\
+		0 \end{bmatrix} & \text{One-Hot Form of Classification Result}\\
 	&&\\
-	J(\theta) & = & -\frac{1}{m}\sum_{i=1}^{m}\sum_{j=1}^{||L||}[Y.*log(a^{(L)}) + (1-Y).*log(1-a^{(L)})] & \text{Cost function of NN used for Backpropogation,}\\
+	J(\theta) & = & -\frac{1}{m}\sum_{i=1}^{m}\sum_{j=1}^{||L||}[Y \odot log(a^{(L)}) + (1-Y) \odot log(1-a^{(L)})] & \text{Cost function of NN used for Backpropogation,}\\
 	& & + \frac{\lambda}{2m}\sum_{l=1}^{L-1}\sum_{i=1}^{s_l}\sum_{j=1}^{s_{l+1}}(\theta^{(l)}_{i,j})^2 & \text{condensed down to a scalar}\\
 	&&\\
 	\delta^{(L)} & = & a^{(L)} - Y & \text{Error of Neural Network Output}\\ 
 	&&\\
-	\delta^{(l)} & = & \delta^{(l+1)}\widehat{\Theta}^{(l)} \odot \sigma'(a^{(l)}\Theta^{(l)}) & \text{Error of layer l}\\
+	\delta^{(l)} & = & \widehat{\delta}^{(l+1)}\widehat{\Theta}^{(l)} \odot \sigma'(a^{(l)}\Theta^{(l)}) & \text{Error of layer l}\\
 	&&\\
 	\widehat{\Theta}^{(l)} & = & \Theta^{(l)}[i, j]; i \in [1,2,3...m], j \in [2,3,4,...n] & \text{Reduced Paramater Matrix (No Bias Terms)} \\ 
 	&&\\
